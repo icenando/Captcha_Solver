@@ -3,24 +3,25 @@ from numpy import asarray, mean, ndarray
 from PIL import Image, ImageOps
 from scipy import ndimage
 from os import path
+import pytesseract
 
 ##################### TWEEK THESE #####################
 captcha_img = "in/3.jpeg"
 out_img = path.join("out", path.basename(captcha_img))
-avg_deviation = 40
-u_filter = 3
+avg_deviation = 35
+u_filter = 4
 #######################################################
 
 @dataclass
 class Image_Processor:
     
-    def read_captcha(self, captcha_img):
+    def read_captcha(self, captcha_img: str) -> Image:
         return Image.open(captcha_img)
         
-    def convert_img_to_monochrome(self, captcha_img):
+    def convert_img_to_monochrome(self, captcha_img: Image) -> Image:
         return ImageOps.grayscale(captcha_img)
     
-    def convert_img_to_array(self, input_img):
+    def convert_img_to_array(self, input_img: Image) -> ndarray:
         return asarray(input_img)
 
 
@@ -52,10 +53,20 @@ class Image_Processor:
         out_file.save(out_img)
         out_file.close()
         
+
+@dataclass
+class Text_Extraction(Image_Processor):
     
+    def extract_text(self, clean_img: Image) -> str:
+        captcha = self.read_captcha(clean_img)
+        captcha.show()
+        return pytesseract.image_to_string(captcha, config='--psm 13 --oem 3 -c tessedit_char_whitelist=0123456789')
+    
+
 if __name__=="__main__":
     
     image_processor = Image_Processor()
+    text_extractor = Text_Extraction()
 
     in_file = image_processor.convert_img_to_array(
             image_processor.convert_img_to_monochrome(
@@ -70,4 +81,9 @@ if __name__=="__main__":
     out_file = image_processor.invert_colours(out_file)
 
     image_processor.save_image(out_file)
+    
+    text = text_extractor.extract_text(out_img)
+    print(text)
+    
+    
     
