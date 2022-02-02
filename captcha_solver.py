@@ -3,9 +3,9 @@ from PIL import Image, ImageOps
 from scipy import ndimage
 
 ### TWEEK THESE ###
-captcha_file = "2.jpeg"
+captcha_file = "3.jpeg"
 avg_deviation = 40
-u_filter = 4
+u_filter = 3
 ###################
 
 def increase_constrast(in_file: ndarray) -> ndarray:
@@ -27,5 +27,7 @@ out_file = Image.fromarray(increase_constrast(in_file))
 in_file = neighbour_comparison(in_file)
 in_file = neighbour_comparison(in_file)
 out_file = Image.fromarray(increase_constrast(in_file))
+
+out_file = ImageOps.invert(out_file)
 
 out_file.show()
