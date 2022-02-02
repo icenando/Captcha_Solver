@@ -48,7 +48,6 @@ class Image_Processor:
     def invert_colours(self, img: Image) -> Image:
         return ImageOps.invert(img)
     
-    
     def save_image(self, out_file: Image) -> None:
         out_file.save(out_img)
         out_file.close()
@@ -72,5 +71,3 @@ if __name__=="__main__":
 
     image_processor.save_image(out_file)
     
-
-
