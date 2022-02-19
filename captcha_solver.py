@@ -7,8 +7,8 @@ from Services.image_processor import Image_Processor
 from Services.text_extraction import Text_Extraction
 
 ##################### TWEEK THESE #####################
-captcha_img = "in/3.jpeg"
-out_img = path.join("out", path.basename(captcha_img))
+captcha_img = path.join("Resources", "in", "3.jpeg")
+out_img = path.join("Resources", "out", path.basename(captcha_img))
 avg_deviation = 35
 u_filter = 4
 #######################################################
