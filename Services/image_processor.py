@@ -31,6 +31,7 @@ class Image_Processor:
     def convert_img_to_array(self, input_img: Image) -> ndarray:
         log.info("Converting image to ndarray.")
         try:
+            input_img.verify()
             return asarray(input_img)
         except Exception as e:
             raise SystemExit(f"Error converting image to ndarray: {e}")
@@ -38,10 +39,11 @@ class Image_Processor:
     def increase_constrast(self, in_file: ndarray) -> ndarray:
         log.info("Increasing contrast.")
         try:
+            assert type(in_file) == ndarray
             avg = mean(in_file, axis=(0, 1))
         except Exception as e:
-            raise SystemError(
-                f"Failed to get mean. The ndarray dimensions might be wrong: {e}"
+            raise SystemExit(
+                f"Failed to get mean. The ndarray dimensions might be wrong, or the object is not of type ndarray: {e}"
             )
         log.info("Changing pixel values.")
         for i, row in enumerate(in_file):
@@ -59,21 +61,27 @@ class Image_Processor:
         # The number is neighbouring pixels to compare agains is defined by "u_filter"
         log.info("Changing pixels based on their neighbours' brightness values.")
         try:
+            assert type(in_file) == ndarray
             return ndimage.uniform_filter(
                 in_file, self.u_filter, mode="constant", cval=0
             )
         except Exception as e:
-            raise SystemError(
+            raise SystemExit(
                 f"Failed to apply neighbour_comparison.uniform_filter: {e}"
             )
 
     def invert_colours(self, img: Image) -> Image:
-        log.info("Inverting colours.")
-        return ImageOps.invert(img)
+        try:
+            log.info("Inverting colours.")
+            img.verify()
+            return ImageOps.invert(img)
+        except Exception as e:
+            raise SystemExit(f"Invalid image: {e}")
 
     def save_image(self, out_file: Image) -> None:
         log.info(f"Saving file.")
         try:
+            out_file.verify()
             out_file.save(self.out_img)
         except Exception as e:
-            raise SystemError(f"Failed to save outfile: {e}")
+            raise SystemExit(f"Failed to save outfile: {e}")
