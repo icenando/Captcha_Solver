@@ -1,8 +1,10 @@
 from os import path
+from platform import processor
 
 import pytest
-from numpy import asarray, logical_and
+from numpy import asarray, logical_and, ndarray
 from PIL import Image, ImageOps
+from py import process
 
 from Services.image_processor import Image_Processor
 
@@ -57,9 +59,25 @@ class TestImageProcessor:
         with pytest.raises(SystemExit):
             self.processor.increase_constrast("")
 
+    def test_increase_constrast_returns_an_ndarray(self):
+        try:
+            assert isinstance(
+                self.processor.increase_constrast(self.ndarray_image), ndarray
+            )
+        except:
+            pytest.fail()
+
     def test_neighbour_comparison_raises_exception(self):
         with pytest.raises(SystemExit):
             self.processor.neighbour_comparison("")
+
+    def test_neighbour_comparison_returns_an_ndarray(self):
+        try:
+            assert isinstance(
+                self.processor.neighbour_comparison(self.ndarray_image), ndarray
+            )
+        except:
+            pytest.fail()
 
     def test_invert_colours_raises_exception(self):
         with pytest.raises(SystemExit):
@@ -68,7 +86,7 @@ class TestImageProcessor:
     def test_invert_colours_returns_image_object(self):
         try:
             inverted_img = self.processor.invert_colours(self.monochrome_image)
-            inverted_img.verify()
+            assert isinstance(inverted_img, Image.Image)
         except:
             pytest.fail()
 
