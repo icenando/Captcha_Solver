@@ -7,7 +7,7 @@ from Services.image_processor import Image_Processor
 from Services.text_extraction import Text_Extraction
 
 ##################### TWEEK THESE #####################
-captcha_img_file = path.join("Resources", "in", "2646.jpeg")
+captcha_img_file = path.join("Resources", "in", "0376.jpeg")
 out_img = path.join("Resources", "out", path.basename(captcha_img_file))
 avg_deviation = 20
 u_filter = 4
@@ -16,13 +16,18 @@ u_filter = 4
 log = Logger.get_logger(__name__)
 
 def main(captcha_img: str) -> str:
+    
     global avg_deviation
     global u_filter
+    
     text = ''
     best_match = ''
     max_tries = avg_deviation
+    
     while len(text) < 4 and max_tries > 0:
+        
         print(f"Attempts remaining #{max_tries}", end='\t')
+        
         try:
             image_processor = Image_Processor(out_img, avg_deviation, u_filter)
             text_extractor = Text_Extraction(image_processor)
@@ -50,8 +55,7 @@ def main(captcha_img: str) -> str:
             else:
                 max_tries -= 1
                 avg_deviation += 1
-                if len(text) > len(best_match):
-                    best_match = text
+                best_match = text if len(text) > len(best_match) else best_match
 
         except Exception as e:
             log.error(e)
