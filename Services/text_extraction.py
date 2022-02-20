@@ -1,3 +1,7 @@
+#!python3
+
+# Uses Pytesseract to extract text from "clean" file.
+
 from dataclasses import dataclass
 
 import Logger

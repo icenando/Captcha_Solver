@@ -1,3 +1,7 @@
+#!python3
+
+# Entry point to captcha solver. Takes filename and returns extracted text as str.
+
 from os import path
 
 from PIL import Image

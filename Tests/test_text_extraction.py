@@ -1,8 +1,10 @@
+#!python3
+
+# Unit tests for text_extraction.py
+
 from os import path
-from platform import processor
 
 import pytest
-from numpy import isin
 from Services.image_processor import Image_Processor
 from Services.text_extraction import Text_Extraction
 

@@ -1,3 +1,7 @@
+#!python3
+
+# Returns a logger that contains the invoking class name. Also sets the log level and format.
+
 import logging
 
 

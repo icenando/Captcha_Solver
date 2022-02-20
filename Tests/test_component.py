@@ -1,3 +1,7 @@
+#!python3
+
+# Component test for captcha_solver. Checks that output matches the filename of the input file.
+
 from os import path
 
 import captcha_solver

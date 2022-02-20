@@ -1,3 +1,7 @@
+#!python3
+
+# The bulk of the work: here the image is processed by increasing its contrast and applying scipy's uniform filter, and saves the image.
+
 from dataclasses import dataclass
 
 from Logger import get_logger

@@ -1,3 +1,7 @@
+#!python3
+
+# Unit tests for image_processor.py
+
 from os import path
 
 import pytest
