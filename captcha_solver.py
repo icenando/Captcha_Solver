@@ -54,7 +54,7 @@ def main(captcha_img: str) -> str:
 
             out_file = image_processor.invert_colours(out_file)
 
-            image_processor.save_image(out_file)
+            # image_processor.save_image(out_file)
 
             text = text_extractor.extract_text(out_img).split('\n')[0]
             print(f"Extracted text: {text}\n")
