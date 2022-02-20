@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 
+from Logger import get_logger
 from numpy import asarray, mean, ndarray
 from PIL import Image, ImageOps
 from scipy import ndimage
-
-from ..Logger import get_logger
 
 log = get_logger(__name__)
 

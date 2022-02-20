@@ -3,8 +3,7 @@ from os import path
 import pytest
 from numpy import asarray, logical_and, ndarray
 from PIL import Image, ImageOps
-
-from ..Services.image_processor import Image_Processor
+from Services.image_processor import Image_Processor
 
 
 class TestImageProcessor:
