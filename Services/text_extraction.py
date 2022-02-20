@@ -25,4 +25,4 @@ class Text_Extraction:
             )
         except Exception as e:
             log.error("An error ocurred when recognisint the text")
-            raise SystemExit(f"An error ocurred when recognisint the text: {e}")
+            raise SystemExit(f"An error ocurred when recognising the text: {e}")
