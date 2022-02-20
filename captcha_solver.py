@@ -9,7 +9,7 @@ from Services.text_extraction import Text_Extraction
 ##################### TWEEK THESE #####################
 captcha_img = path.join("Resources", "in", "3.jpeg")
 out_img = path.join("Resources", "out", path.basename(captcha_img))
-avg_deviation = 35
+avg_deviation = 30
 u_filter = 4
 #######################################################
 
