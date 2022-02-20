@@ -9,7 +9,7 @@ from Services.image_processor import Image_Processor
 class TestImageProcessor:
     processor = Image_Processor("", 1, 1)
     avg_deviation = 35
-    captcha_img = path.join("Resources", "in", "3.jpeg")
+    captcha_img = path.join("Resources", "in", "2646.jpeg")
     image = Image.open(captcha_img)
     monochrome_image = ImageOps.grayscale(image)
     ndarray_image = asarray(monochrome_image)

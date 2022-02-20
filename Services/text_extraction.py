@@ -16,7 +16,6 @@ class Text_Extraction:
         log.info(f"Extracting text from {clean_img}")
         try:
             captcha = self.image_processor.read_captcha(clean_img)
-            captcha.show()
             return pytesseract.image_to_string(
                 captcha, config="--psm 13 --oem 3 -c tessedit_char_whitelist=0123456789"
             )
