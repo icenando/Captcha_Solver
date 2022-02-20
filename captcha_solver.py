@@ -7,15 +7,15 @@ from Services.image_processor import Image_Processor
 from Services.text_extraction import Text_Extraction
 
 ##################### TWEEK THESE #####################
-captcha_img = path.join("Resources", "in", "3.jpeg")
-out_img = path.join("Resources", "out", path.basename(captcha_img))
+captcha_img_file = path.join("Resources", "in", "2646.jpeg")
+out_img = path.join("Resources", "out", path.basename(captcha_img_file))
 avg_deviation = 30
 u_filter = 4
 #######################################################
 
 log = Logger.get_logger(__name__)
 
-if __name__ == "__main__":
+def main(captcha_img):
     try:
         image_processor = Image_Processor(out_img, avg_deviation, u_filter)
         text_extractor = Text_Extraction(image_processor)
@@ -37,6 +37,12 @@ if __name__ == "__main__":
 
         text = text_extractor.extract_text(out_img)
         print(f"\nExtracted text: {text}\n")
+        
+        return text
 
     except Exception as e:
         log.error(e)
+        SystemExit()
+
+if __name__ == "__main__":
+    main(captcha_img=captcha_img_file)
