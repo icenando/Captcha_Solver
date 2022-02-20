@@ -9,40 +9,57 @@ from Services.text_extraction import Text_Extraction
 ##################### TWEEK THESE #####################
 captcha_img_file = path.join("Resources", "in", "2646.jpeg")
 out_img = path.join("Resources", "out", path.basename(captcha_img_file))
-avg_deviation = 30
+avg_deviation = 20
 u_filter = 4
 #######################################################
 
 log = Logger.get_logger(__name__)
 
-def main(captcha_img):
-    try:
-        image_processor = Image_Processor(out_img, avg_deviation, u_filter)
-        text_extractor = Text_Extraction(image_processor)
+def main(captcha_img: str) -> str:
+    global avg_deviation
+    global u_filter
+    text = ''
+    best_match = ''
+    max_tries = avg_deviation
+    while len(text) < 4 and max_tries > 0:
+        print(f"Attempts remaining #{max_tries}", end='\t')
+        try:
+            image_processor = Image_Processor(out_img, avg_deviation, u_filter)
+            text_extractor = Text_Extraction(image_processor)
 
-        in_file = image_processor.convert_img_to_array(
-            image_processor.convert_img_to_monochrome(
-                image_processor.read_captcha(captcha_img)
+            in_file = image_processor.convert_img_to_array(
+                image_processor.convert_img_to_monochrome(
+                    image_processor.read_captcha(captcha_img)
+                )
             )
-        )
 
-        out_file = Image.fromarray(image_processor.increase_constrast(in_file))
-        in_file = image_processor.neighbour_comparison(in_file)
-        in_file = image_processor.neighbour_comparison(in_file)
-        out_file = Image.fromarray(image_processor.increase_constrast(in_file))
+            out_file = Image.fromarray(image_processor.increase_constrast(in_file))
+            in_file = image_processor.neighbour_comparison(in_file)
+            in_file = image_processor.neighbour_comparison(in_file)
+            out_file = Image.fromarray(image_processor.increase_constrast(in_file))
 
-        out_file = image_processor.invert_colours(out_file)
+            out_file = image_processor.invert_colours(out_file)
 
-        image_processor.save_image(out_file)
+            image_processor.save_image(out_file)
 
-        text = text_extractor.extract_text(out_img)
-        print(f"\nExtracted text: {text}\n")
+            text = text_extractor.extract_text(out_img).split('\n')[0]
+            print(f"Extracted text: {text}\n")
+            
+            if len(text) == 4:
+                return text
+            else:
+                max_tries -= 1
+                avg_deviation += 1
+                if len(text) > len(best_match):
+                    best_match = text
+
+        except Exception as e:
+            log.error(e)
+            SystemExit()
+            break
         
-        return text
-
-    except Exception as e:
-        log.error(e)
-        SystemExit()
+    print(f"Best match: {best_match}\n")    
+    return best_match
 
 if __name__ == "__main__":
     main(captcha_img=captcha_img_file)
