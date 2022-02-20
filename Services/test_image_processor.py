@@ -1,10 +1,8 @@
 from os import path
-from platform import processor
 
 import pytest
 from numpy import asarray, logical_and, ndarray
 from PIL import Image, ImageOps
-from py import process
 
 from Services.image_processor import Image_Processor
 
