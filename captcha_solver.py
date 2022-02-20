@@ -6,12 +6,17 @@ import Logger
 from Services.image_processor import Image_Processor
 from Services.text_extraction import Text_Extraction
 
-##################### TWEEK THESE #####################
-captcha_img_file = path.join("Resources", "in", "0376.jpeg")
-out_img = path.join("Resources", "out", path.basename(captcha_img_file))
+##################### TWEEK THis #####################
+file_name = "2646.jpeg"
+#
+# OPTIONAL CHANGES - LEAVE AS IS FOR STANDARD PROCESSING
 avg_deviation = 20
 u_filter = 4
+captcha_text_length = 4
 #######################################################
+
+captcha_img_file = path.join("Resources", "in", file_name)
+out_img = path.join("Resources", "out", path.basename(captcha_img_file))
 
 log = Logger.get_logger(__name__)
 
@@ -24,7 +29,7 @@ def main(captcha_img: str) -> str:
     best_match = ''
     max_tries = avg_deviation
     
-    while len(text) < 4 and max_tries > 0:
+    while len(text) != captcha_text_length and max_tries > 0:
         
         print(f"Attempts remaining #{max_tries}", end='\t')
         
@@ -50,12 +55,14 @@ def main(captcha_img: str) -> str:
             text = text_extractor.extract_text(out_img).split('\n')[0]
             print(f"Extracted text: {text}\n")
             
-            if len(text) == 4:
+            if len(text) == captcha_text_length:
                 return text
             else:
                 max_tries -= 1
                 avg_deviation += 1
-                best_match = text if len(text) > len(best_match) else best_match
+                if len(text) > len(best_match) and len(text) < (captcha_text_length+1):
+                    best_match = text  
+                else: continue
 
         except Exception as e:
             log.error(e)
