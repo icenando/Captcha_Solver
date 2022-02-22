@@ -24,7 +24,7 @@ out_img = path.join("Resources", "out", path.basename(captcha_img_file))
 
 log = Logger.get_logger(__name__)
 
-def main(captcha_img: str) -> str:
+def main(captcha_img: str, out_img: str) -> str:
     
     global avg_deviation
     global u_filter
@@ -54,7 +54,7 @@ def main(captcha_img: str) -> str:
 
             out_file = image_processor.invert_colours(out_file)
 
-            # image_processor.save_image(out_file)
+            image_processor.save_image(out_file)
 
             text = text_extractor.extract_text(out_img).split('\n')[0]
             print(f"Extracted text: {text}\n")
@@ -77,4 +77,4 @@ def main(captcha_img: str) -> str:
     return best_match
 
 if __name__ == "__main__":
-    main(captcha_img=captcha_img_file)
+    main(captcha_img_file, out_img)
