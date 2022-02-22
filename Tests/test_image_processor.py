@@ -49,7 +49,7 @@ class TestImageProcessor:
         try:
             assert (
                 logical_and(
-                    self.ndarray_image,
+                    asarray(self.monochrome_image),
                     self.processor.convert_img_to_array(self.monochrome_image),
                 )
             ).all()
