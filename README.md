@@ -5,9 +5,10 @@ A simple captcha breaker. It has been tested with only one type of numeric captc
 
 **INSTALLATION**
 
-1) Download code.
-2) Create a virtual environment and activate it.
-3) `pip install -r requirements.txt`
+1) [Install Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html).
+2) Download code.
+3) Create a virtual environment and activate it.
+4) `pip install -r requirements.txt`
 
 
 **USAGE**
