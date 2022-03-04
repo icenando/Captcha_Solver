@@ -23,14 +23,16 @@ class Image_Processor:
         try:
             return Image.open(captcha_img)
         except Exception as e:
-            raise SystemExit(f"Error opening image: {e}")
+            log.error(f"Error opening image: {e}")
+            raise SystemExit
 
     def convert_img_to_monochrome(self, captcha_img: Image) -> Image:
         log.info(f"Converting image to greyscale.")
         try:
             return ImageOps.grayscale(captcha_img)
         except Exception as e:
-            raise SystemExit(f"Error converting image to grayscale: {e}")
+            log.error(f"Error converting image to grayscale: {e}")
+            raise SystemExit
 
     def convert_img_to_array(self, input_img: Image) -> ndarray:
         log.info("Converting image to ndarray.")
@@ -38,17 +40,19 @@ class Image_Processor:
             input_img.verify()
             return asarray(input_img)
         except Exception as e:
-            raise SystemExit(f"Error converting image to ndarray: {e}")
+            log.error(f"Error converting image to ndarray: {e}")
+            raise SystemExit
 
     def increase_constrast(self, in_file: ndarray) -> ndarray:
         log.info("Increasing contrast.")
+        assert type(in_file) == ndarray
         try:
-            assert type(in_file) == ndarray
             avg = mean(in_file, axis=(0, 1))
         except Exception as e:
-            raise SystemExit(
+            log.error(
                 f"Failed to get mean. The ndarray dimensions might be wrong, or the object is not of type ndarray: {e}"
             )
+            raise SystemExit
         log.info("Changing pixel values.")
         for i, row in enumerate(in_file):
             for pixel, value in enumerate(row):
@@ -64,15 +68,14 @@ class Image_Processor:
         # Fills in central pixel with the same colour as its neighbouring pixels.
         # The number is neighbouring pixels to compare agains is defined by "u_filter"
         log.info("Changing pixels based on their neighbours' brightness values.")
+        assert type(in_file) == ndarray
         try:
-            assert type(in_file) == ndarray
             return ndimage.uniform_filter(
                 in_file, self.u_filter, mode="constant", cval=0
             )
         except Exception as e:
-            raise SystemExit(
-                f"Failed to apply neighbour_comparison.uniform_filter: {e}"
-            )
+            log.error(f"Failed to apply neighbour_comparison.uniform_filter: {e}")
+            raise SystemExit
 
     def invert_colours(self, img: Image) -> Image:
         try:
@@ -80,7 +83,8 @@ class Image_Processor:
             img.verify()
             return ImageOps.invert(img)
         except Exception as e:
-            raise SystemExit(f"Invalid image: {e}")
+            log.error(f"Invalid image: {e}")
+            raise SystemExit
 
     def save_image(self, out_file: Image) -> None:
         log.info(f"Saving file.")
@@ -88,4 +92,5 @@ class Image_Processor:
             out_file.verify()
             out_file.save(self.out_img)
         except Exception as e:
-            raise SystemExit(f"Failed to save outfile: {e}")
+            log.error(f"Failed to save outfile: {e}")
+            raise SystemExit
