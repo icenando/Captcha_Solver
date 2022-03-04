@@ -57,7 +57,7 @@ class TestImageProcessor:
             pytest.fail()
 
     def test_increase_constrast_raises_exception(self):
-        with pytest.raises(SystemExit):
+        with pytest.raises(AssertionError):
             self.processor.increase_constrast("")
 
     def test_increase_constrast_returns_an_ndarray(self):
@@ -69,7 +69,7 @@ class TestImageProcessor:
             pytest.fail()
 
     def test_neighbour_comparison_raises_exception(self):
-        with pytest.raises(SystemExit):
+        with pytest.raises(AssertionError):
             self.processor.neighbour_comparison("")
 
     def test_neighbour_comparison_returns_an_ndarray(self):
